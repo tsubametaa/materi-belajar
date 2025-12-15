@@ -77,14 +77,13 @@
           <div class="relative group">
             <div class="w-20 h-20 bg-[#222831] shadow-sm rounded-lg"></div>
             <button
-              @click="copyText('#222831')"
+              @click="copyText('222831')"
               class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#00ADB5] hover:bg-[#009ba3] text-white px-3 py-1 rounded-md font-semibold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg cursor-pointer whitespace-nowrap"
             >
               {{ copiedItem === '#222831' ? 'Copied!' : 'Copy' }}
             </button>
           </div>
           <span class="font-bold text-lg">Warna Teks</span>
-          <code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono">#222831</code>
         </div>
 
         <!-- Color Item 2 -->
@@ -92,14 +91,13 @@
           <div class="relative group">
             <div class="w-20 h-20 bg-[#00ADB5] shadow-sm rounded-lg"></div>
             <button
-              @click="copyText('#00ADB5')"
+              @click="copyText('00ADB5')"
               class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#222831] hover:bg-[#1a1f26] text-white px-3 py-1 rounded-md font-semibold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg cursor-pointer whitespace-nowrap"
             >
               {{ copiedItem === '#00ADB5' ? 'Copied!' : 'Copy' }}
             </button>
           </div>
           <span class="font-bold text-lg">Warna Button</span>
-          <code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono">#00ADB5</code>
         </div>
 
         <!-- Color Item 3 -->
@@ -107,16 +105,32 @@
           <div class="relative group">
             <div class="w-20 h-20 bg-[#EEEEEE] shadow-sm border border-gray-200 rounded-lg"></div>
             <button
-              @click="copyText('#EEEEEE')"
+              @click="copyText('EEEEEE')"
               class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-[#00ADB5] hover:bg-[#009ba3] text-white px-3 py-1 rounded-md font-semibold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg cursor-pointer whitespace-nowrap"
             >
               {{ copiedItem === '#EEEEEE' ? 'Copied!' : 'Copy' }}
             </button>
           </div>
           <span class="font-bold text-lg">Warna Background</span>
-          <code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono">#EEEEEE</code>
         </div>
       </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div
+      v-if="showToast"
+      class="fixed top-5 right-5 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300 z-50 flex items-center gap-2 animate-bounce"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 text-green-400"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      <span class="font-medium">{{ toastMessage }}</span>
     </div>
   </div>
 </template>
@@ -129,10 +143,22 @@ const heroImg = ref<HTMLImageElement | null>(null)
 const beritaImg = ref<HTMLImageElement | null>(null)
 const mapsImg = ref<HTMLImageElement | null>(null)
 
+const showToast = ref(false)
+const toastMessage = ref('')
+
+const triggerToast = (message: string) => {
+  toastMessage.value = message
+  showToast.value = true
+  setTimeout(() => {
+    showToast.value = false
+  }, 3000)
+}
+
 const copyText = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text)
     copiedItem.value = text
+    triggerToast('Kode Warna Berhasil Disalin')
     setTimeout(() => {
       copiedItem.value = null
     }, 2000)
@@ -169,6 +195,7 @@ const copyImage = async (imageKey: string) => {
           }),
         ])
         copiedItem.value = imageKey
+        triggerToast('Gambar Berhasil Disalin')
         setTimeout(() => {
           copiedItem.value = null
         }, 2000)
