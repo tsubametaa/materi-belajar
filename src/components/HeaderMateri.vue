@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex justify-center py-6 px-4">
+  <div class="w-full flex justify-center py-6 px-4 sticky top-0 z-50">
     <div
       class="bg-[#0F1E45] text-white rounded-full px-8 py-4 flex items-center w-full max-w-6xl shadow-lg relative"
     >
